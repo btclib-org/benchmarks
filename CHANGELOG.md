@@ -1320,7 +1320,7 @@ are.
   is what says so, in the tree that is asking, and is what would have
   caught this had the docstring cited it rather than a name.
 
-[gh130]: https://github.com/btclib-org/btclib-benchmarks/issues/130
+[gh130]: https://github.com/btclib-org/benchmarks/issues/130
 
 ### CONTRIBUTING.md carries every gate's command
 
@@ -1342,7 +1342,7 @@ are.
   command sits with them, so which contexts are required stays something
   the file re-derives rather than asserts.
 
-[gh131]: https://github.com/btclib-org/btclib-benchmarks/issues/131
+[gh131]: https://github.com/btclib-org/benchmarks/issues/131
 
 ### .yamllint.yaml turns the default rule set back on
 
@@ -1391,7 +1391,7 @@ are.
   here and which one it cannot, without a number that can drift from
   what the file holds. [ISS 132][gh132]
 
-[gh132]: https://github.com/btclib-org/btclib-benchmarks/issues/132
+[gh132]: https://github.com/btclib-org/benchmarks/issues/132
 
 ### REPOSITORY.md stops counting the contexts it prints above
 
@@ -1412,7 +1412,7 @@ are.
   the organization standard asks for and the shape the rest of this
   file already uses. [ISS 142][gh142]
 
-[gh142]: https://github.com/btclib-org/btclib-benchmarks/issues/142
+[gh142]: https://github.com/btclib-org/benchmarks/issues/142
 
 ### CONTRIBUTING.md sends a contributor to the organization standard
 
@@ -3054,9 +3054,9 @@ are.
   markdown file per script under `results/`" rather than bumped to six,
   so a seventh benchmark doesn't strand the comment again.
 
-[iss122]: https://github.com/btclib-org/btclib-benchmarks/issues/122
+[iss122]: https://github.com/btclib-org/benchmarks/issues/122
 
-[iss120]: https://github.com/btclib-org/btclib-benchmarks/issues/120
+[iss120]: https://github.com/btclib-org/benchmarks/issues/120
 
 ### `.pre-commit-config.yaml` carried more of btclib's tree than two comments
 
@@ -3113,7 +3113,7 @@ are.
   identical on purpose — only for asserting something that turns out
   false of one of the trees sharing it.
 
-[iss127]: https://github.com/btclib-org/btclib-benchmarks/issues/127
+[iss127]: https://github.com/btclib-org/benchmarks/issues/127
 
 ### The build dependency group named a tool nothing runs
 
@@ -3131,7 +3131,7 @@ are.
   rather than assumed, and needs no change now that the group it describes
   matches it.
 
-[iss134]: https://github.com/btclib-org/btclib-benchmarks/issues/134
+[iss134]: https://github.com/btclib-org/benchmarks/issues/134
 
 ### The organization's link-destination rule is enforced here too
 
@@ -3255,7 +3255,7 @@ are.
 - **`.taplo.toml` named mutation configuration under `.github` that this
   repository has never had.** The same claim was found in this
   repository's `.pre-commit-config.yaml` and rewritten under
-  [ISS 127](https://github.com/btclib-org/btclib-benchmarks/issues/127),
+  [ISS 127](https://github.com/btclib-org/benchmarks/issues/127),
   but the file that hook's own comment sends the
   reader to for "the formatting choices and the reasoning" still
   carried it, unswept, because it was out of that issue's scope. The
@@ -5006,18 +5006,18 @@ their first twelve characters print as two (issue btclib-org/.github#1343).
   of `02` and `04` time `PrvKeyData(q).pub.sec`; `taproot_tweak` builds its
   `PubKeyData` per call; `results/` not re-measured** (closes #428) (closes #441).
 
-[iss23]: https://github.com/btclib-org/btclib-benchmarks/issues/23
-[iss28]: https://github.com/btclib-org/btclib-benchmarks/issues/28
-[iss35]: https://github.com/btclib-org/btclib-benchmarks/issues/35
-[iss42]: https://github.com/btclib-org/btclib-benchmarks/issues/42
-[iss47]: https://github.com/btclib-org/btclib-benchmarks/issues/47
-[iss53]: https://github.com/btclib-org/btclib-benchmarks/issues/53
-[iss55]: https://github.com/btclib-org/btclib-benchmarks/issues/55
-[iss67]: https://github.com/btclib-org/btclib-benchmarks/issues/67
-[iss68]: https://github.com/btclib-org/btclib-benchmarks/issues/68
-[iss83]: https://github.com/btclib-org/btclib-benchmarks/issues/83
-[iss95]: https://github.com/btclib-org/btclib-benchmarks/issues/95
-[iss96]: https://github.com/btclib-org/btclib-benchmarks/issues/96
-[iss111]: https://github.com/btclib-org/btclib-benchmarks/issues/111
-[iss128]: https://github.com/btclib-org/btclib-benchmarks/issues/128
-[pr99]: https://github.com/btclib-org/btclib-benchmarks/pull/99
+[iss23]: https://github.com/btclib-org/benchmarks/issues/23
+[iss28]: https://github.com/btclib-org/benchmarks/issues/28
+[iss35]: https://github.com/btclib-org/benchmarks/issues/35
+[iss42]: https://github.com/btclib-org/benchmarks/issues/42
+[iss47]: https://github.com/btclib-org/benchmarks/issues/47
+[iss53]: https://github.com/btclib-org/benchmarks/issues/53
+[iss55]: https://github.com/btclib-org/benchmarks/issues/55
+[iss67]: https://github.com/btclib-org/benchmarks/issues/67
+[iss68]: https://github.com/btclib-org/benchmarks/issues/68
+[iss83]: https://github.com/btclib-org/benchmarks/issues/83
+[iss95]: https://github.com/btclib-org/benchmarks/issues/95
+[iss96]: https://github.com/btclib-org/benchmarks/issues/96
+[iss111]: https://github.com/btclib-org/benchmarks/issues/111
+[iss128]: https://github.com/btclib-org/benchmarks/issues/128
+[pr99]: https://github.com/btclib-org/benchmarks/pull/99
