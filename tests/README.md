@@ -45,13 +45,15 @@ backend — and nothing checks any of those three either.
 
 **The suite opens no socket, and this is where the decision not to test
 that is recorded.** The property holds: nothing the suite reads of this
-tree — `tests/`, `src/btclib_benchmarks/`, the benchmark scripts —
-imports `socket`, `urllib` or an HTTP client, and the subprocesses it
-spawns run this interpreter over that same code, `pure_python_path_test.py`'s
-probe and `vectors_test.py`'s re-run of itself with the C turned off, so
-what a child executes is what the same walk already covers. What does
-reach upstream is a weekly workflow's own script,
-`.github/scripts/check_vendored_vectors.py`, which no test imports.
+tree — `tests/`, `src/btclib_benchmarks/`, the benchmark scripts,
+`.github/scripts/` — imports `socket`, `urllib` or an HTTP client, and
+the subprocesses it spawns run this interpreter over that same code,
+`pure_python_path_test.py`'s probe and `vectors_test.py`'s re-run of
+itself with the C turned off, so what a child executes is what the same
+walk already covers. What does reach upstream is a weekly workflow's own
+script, `.github/scripts/check_vendored_vectors.py`, through `gh` in a
+subprocess; `check_vendored_vectors_test.py`'s docstring says how its
+tests keep that call inside the suite.
 
 It is a property this repository states rather than one it merely has:
 that script and `vendored-vectors.yml` exist because the suite cannot ask
