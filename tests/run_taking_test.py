@@ -21,6 +21,7 @@ import json
 import platform
 import shutil
 import sys
+from pathlib import PurePosixPath
 from typing import TYPE_CHECKING
 
 import pytest
@@ -35,6 +36,7 @@ if TYPE_CHECKING:
 def _no_installs(monkeypatch: pytest.MonkeyPatch) -> None:
     """Make the run's installs this module's to decide, not the machine's."""
     monkeypatch.setattr(_provenance, "_distributions", list)
+    monkeypatch.setattr(_results, "_distributions", list)
 
 
 def test_a_command_answers_with_its_output() -> None:
@@ -230,9 +232,21 @@ def test_a_default_branch_run_never_replaces_a_release_run_or_page(
 class _Installed:
     """A distribution as `importlib.metadata.distributions()` yields one."""
 
-    def __init__(self, name: str, direct: dict[str, object] | None) -> None:
+    def __init__(
+        self,
+        name: str,
+        direct: dict[str, object] | None,
+        version: str = "1.0",
+        where: str = "/env",
+    ) -> None:
         self.metadata = {"Name": name}
         self.direct = direct
+        self.version = version
+        self.where = where
+
+    def locate_file(self, path: str) -> PurePosixPath:
+        """Answer the directory the distribution is installed in."""
+        return PurePosixPath(self.where) / path
 
     def read_text(self, filename: str) -> str | None:
         """Answer `direct_url.json`, or nothing for an index install."""
@@ -363,3 +377,193 @@ def test_a_lock_is_its_sha256_and_its_absence_is_nothing(
     assert _results._lock() is None
     lock.write_bytes(b"version = 1\n")
     assert _results._lock() == hashlib.sha256(b"version = 1\n").hexdigest()
+
+
+LOCK = (
+    "[[package]]\n"
+    'name = "ecdsa"\n'
+    'version = "0.19.2"\n'
+    "[[package]]\n"
+    'name = "foo-bar"\n'
+    'version = "1.0"\n'
+    "[[package]]\n"
+    'name = "sphinx"\n'
+    'version = "9.0.4"\n'
+    "[[package]]\n"
+    'name = "sphinx"\n'
+    'version = "9.1.0"\n'
+    "[[package]]\n"
+    'name = "colorama"\n'
+    'version = "0.4.6"\n'
+    "[[package]]\n"
+    'name = "virtual"\n'
+)
+
+
+@pytest.mark.parametrize(
+    "installed, expected",
+    [
+        pytest.param([], [], id="nothing-installed"),
+        pytest.param([("ecdsa", "0.19.2")], [], id="the-locked-version"),
+        pytest.param(
+            [("ecdsa", "0.19.1")], ["ecdsa==0.19.1"], id="a-version-not-locked"
+        ),
+        pytest.param(
+            [("ecdsa", "0.19.1"), ("ecdsa", "0.19.2")],
+            ["ecdsa==0.19.1"],
+            id="laid-over-the-locked-version",
+        ),
+        pytest.param(
+            [("ecdsa", "0.19.2"), ("ecdsa", "0.19.1")], [], id="shadowed-by-it"
+        ),
+        pytest.param([("Foo_Bar", "1.0")], [], id="locked-under-another-spelling"),
+        pytest.param(
+            [("Foo_Bar", "2.0")], ["Foo_Bar==2.0"], id="not-locked-another-spelling"
+        ),
+        pytest.param(
+            [("sphinx", "9.0.4"), ("sphinx", "9.1.0")], [], id="either-listed-version"
+        ),
+        pytest.param([("absent", "3.0")], ["absent==3.0"], id="not-in-the-lock"),
+    ],
+)
+def test_an_index_install_the_lock_does_not_pin_is_a_with_at_its_version(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    installed: list[tuple[str, str]],
+    expected: list[str],
+) -> None:
+    """With this project not installed, each install is held to the lock.
+
+    A version the lock lists is not one, whatever the name's spelling. Where
+    a name is installed twice the first on the path is read, as it is the one
+    imported.
+    """
+    lock = tmp_path / "uv.lock"
+    lock.write_text(LOCK, encoding="utf-8")
+    dists = [_Installed(name, None, version) for name, version in installed]
+    monkeypatch.setattr(_results, "_distributions", lambda: dists)
+    assert _results.index_overlays(lock) == expected
+
+
+def test_an_install_with_a_direct_url_is_no_index_overlay(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """A git install and an editable one are not read here.
+
+    `git_overlays` and `direct_installs` read them.
+    """
+    git: dict[str, object] = {
+        "url": "https://example.org/ecdsa",
+        "vcs_info": {"vcs": "git", "commit_id": "c0ffee"},
+    }
+    editable: dict[str, object] = {"url": "file:///x", "dir_info": {"editable": True}}
+    dists = [
+        _Installed("ecdsa", git, "0.19.1"),
+        _Installed("ecdsa", None, "0.19.1"),
+        _Installed("absent", editable, "3.0"),
+    ]
+    monkeypatch.setattr(_results, "_distributions", lambda: dists)
+    assert _results.index_overlays(tmp_path / "absent.lock") == []
+
+
+def test_without_a_lock_every_index_install_is_an_overlay(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """With no lock nothing is pinned, the version a lock would pin included."""
+    dists = [_Installed("ecdsa", None, "0.19.2")]
+    monkeypatch.setattr(_results, "_distributions", lambda: dists)
+    assert _results.index_overlays(tmp_path / "absent.lock") == ["ecdsa==0.19.2"]
+
+
+def test_a_run_with_an_index_version_the_lock_does_not_pin_records_it(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """It stays a release run, and its command installs that version again.
+
+    Saved, the run that replaces the release run carries the `--with`, so the
+    page names a command that runs what it timed. The run at the locked
+    version, before it, carries none.
+    """
+    lock = tmp_path / "uv.lock"
+    lock.write_text(LOCK, encoding="utf-8")
+    monkeypatch.setattr(_results, "LOCK_FILE", lock)
+    monkeypatch.setattr(_results, "RESULTS", tmp_path)
+    dists = [_Installed("ecdsa", None, "0.19.2")]
+    monkeypatch.setattr(_results, "_distributions", lambda: dists)
+    run = _results.taken_now("scripts/00-x.py", "m")
+    assert run.mode == _results.RELEASE
+    assert run.command == "uv run python scripts/00-x.py"
+    dists[0] = _Installed("ecdsa", None, "0.19.1")
+    run = _results.taken_now("scripts/00-x.py", "m")
+    assert run.mode == _results.RELEASE
+    assert run.command == "uv run --with ecdsa==0.19.1 python scripts/00-x.py"
+    assert _results._rendered_command(run)[1:] == [
+        "  --with ecdsa==0.19.1\\",
+        "  python scripts/00-x.py",
+    ]
+    assert _results.save(_pairs_run(run)) == tmp_path / "00-x.json"
+    assert _results.load("00-x").run.command == run.command
+    monkeypatch.setattr(_results, "git_overlays", lambda _: [OVERLAY])
+    run = _results.taken_now("scripts/00-x.py", "m")
+    assert run.mode == _results.DEFAULT_BRANCH
+    assert run.command == (
+        f"uv run --with '{OVERLAY[0]}' --with ecdsa==0.19.1 python scripts/00-x.py"
+    )
+
+
+PROJECT_INSTALL: dict[str, object] = {
+    "url": "file:///dev/bench",
+    "dir_info": {"editable": True},
+}
+
+
+@pytest.mark.parametrize(
+    "installed, expected",
+    [
+        pytest.param([("ecdsa", "0.19.2", "/env")], [], id="the-environments-own"),
+        pytest.param(
+            [("ecdsa", "0.19.1", "/env")], ["ecdsa==0.19.1"], id="changed-by-hand"
+        ),
+        pytest.param(
+            [("colorama", "0.4.6", "/overlay")],
+            ["colorama==0.4.6"],
+            id="listed-but-not-installed-here",
+        ),
+        pytest.param(
+            [("sphinx", "9.0.4", "/overlay"), ("sphinx", "9.1.0", "/env")],
+            ["sphinx==9.0.4"],
+            id="another-listed-version-laid-over",
+        ),
+        pytest.param(
+            [("six", "1.17.0", "/overlay"), ("six", "1.17.0", "/env")],
+            [],
+            id="the-same-version-laid-over",
+        ),
+        pytest.param(
+            [("foo-bar", "1.0", "/overlay"), ("Foo_Bar", "1.0", "/env")],
+            [],
+            id="the-same-under-another-spelling",
+        ),
+    ],
+)
+def test_an_install_outside_the_project_environment_is_held_to_it(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    installed: list[tuple[str, str, str]],
+    expected: list[str],
+) -> None:
+    """The environment is the directory this project is installed in.
+
+    An install outside it is an overlay unless the environment holds the
+    same version, whatever the lock lists: colorama is listed for another
+    platform and installed only by the `--with`. An install inside it is
+    held to the lock.
+    """
+    lock = tmp_path / "uv.lock"
+    lock.write_text(LOCK, encoding="utf-8")
+    dists = [
+        *(_Installed(name, None, version, where) for name, version, where in installed),
+        _Installed("btclib_benchmarks", PROJECT_INSTALL, "1.0", "/env"),
+    ]
+    monkeypatch.setattr(_results, "_distributions", lambda: dists)
+    assert _results.index_overlays(lock) == expected

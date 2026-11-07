@@ -55,18 +55,22 @@ import subprocess
 import tomllib
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
+from importlib.metadata import distributions as _distributions
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 from btclib_benchmarks._provenance import (
     LOCK_FILE,
+    PROJECT,
     WHAT_A_TIMING_CONTAINS,
+    _normalized,
     direct_installs,
     git_overlays,
 )
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
+    from importlib.metadata import Distribution
 
 # what `render.py` refuses to read rather than misread. A saved run is a
 # file this project writes and reads back a release apart, so the one
@@ -107,13 +111,14 @@ SCHEMA = 1
 # taken again
 RESULTS = Path(__file__).resolve().parent.parent.parent / "results"
 
-# the two modes a run is taken in. A release run times every comparand as
-# `uv.lock` installs it. A default-branch run has a git install laid over
-# that, one the lock does not pin, and is kept in a directory of its own:
-# saved beside the release run, it would replace the page README.md links.
-# A run file with no mode is a release run, which keeps the runs saved
-# before the mode was recorded the files they are. A run with a package
-# from neither an index nor git is in no mode and is not saved (`save`)
+# the two modes a run is taken in. A release run times every comparand
+# from an index, or at the git commit `uv.lock` pins. A default-branch run
+# has a git install laid over that, one the lock does not pin, and is kept
+# in a directory of its own: saved beside the release run, it would
+# replace the page README.md links. A run file with no mode is a release
+# run, which keeps the runs saved before the mode was recorded the files
+# they are. A run with a package from neither an index nor git is in no
+# mode and is not saved (`save`)
 RELEASE = "release"
 DEFAULT_BRANCH = "default branch"
 MODE_DIRECTORIES = {RELEASE: ".", DEFAULT_BRANCH: "default-branch"}
@@ -406,10 +411,12 @@ class Run:
     them is README.md's *One run of each, published*.
 
     `mode` is `RELEASE` or `DEFAULT_BRANCH`, and decides the directory the
-    run is saved in. `command` names the script and a `--with` at its
-    commit for each git install the lock does not pin. `branches` names the
-    branch each such install came from, one `<name> <branch>` per line, and
-    is absent where none came from a branch.
+    run is saved in. `command` names the script, a `--with` at its commit
+    for each git install the lock does not pin, and a `--with` at its
+    version for each index install laid over the project's environment
+    (`index_overlays`). `branches` names the branch each such git install
+    came from, one `<name> <branch>` per line, and is absent where none
+    came from a branch.
     """
 
     when: str
@@ -604,6 +611,68 @@ def _lock() -> str | None:
     return hashlib.sha256(LOCK_FILE.read_bytes()).hexdigest()
 
 
+def _locked_versions(lock: Path) -> dict[str, set[str | None]]:
+    """Return every version `uv.lock` lists for each distribution it holds.
+
+    Nothing where there is no lock, so that every index install is then one
+    the lock does not pin.
+    """
+    if not lock.is_file():
+        return {}
+    packages = tomllib.loads(lock.read_text(encoding="utf-8")).get("package", [])
+    versions: dict[str, set[str | None]] = {}
+    for package in packages:
+        versions.setdefault(package["name"], set()).add(package.get("version"))
+    return versions
+
+
+def index_overlays(lock: Path) -> list[str]:
+    """Return `<name>==<version>` for each index install over the environment.
+
+    These are the installs `uv run --with '<name>==<version>'` lays over
+    the project's environment, which is the directory holding this
+    project's own install. `uv run` puts them in a directory of their own,
+    ahead of that one on the path, so an install outside it is one of
+    them, unless the environment holds the same version. An install inside
+    it, or any install where this project is not installed, is one where
+    its version is none the lock lists: an environment changed by hand, or
+    not made by `uv sync`. An install with a `direct_url.json` is not one:
+    `git_overlays` and `direct_installs` read those.
+
+    Where one name is installed twice, the first on the path is the one
+    imported, and the only one asked about.
+    """
+    locked = _locked_versions(lock)
+    installed = list(_distributions())
+    home = next(
+        (
+            dist.locate_file("")
+            for dist in installed
+            if _normalized(dist.metadata["Name"]) == PROJECT
+        ),
+        None,
+    )
+    held = {
+        (_normalized(dist.metadata["Name"]), dist.version)
+        for dist in installed
+        if dist.locate_file("") == home
+    }
+    first: dict[str, Distribution] = {}
+    for dist in installed:
+        first.setdefault(_normalized(dist.metadata["Name"]), dist)
+    found = []
+    for name, dist in first.items():
+        if dist.read_text("direct_url.json") is not None:
+            continue
+        if home is not None and dist.locate_file("") != home:
+            overlaid = (name, dist.version) not in held
+        else:
+            overlaid = dist.version not in locked.get(name, set())
+        if overlaid:
+            found.append(f"{dist.metadata['Name']}=={dist.version}")
+    return sorted(found, key=_normalized)
+
+
 def moment() -> datetime:
     """Return now, with the offset the machine is at.
 
@@ -637,12 +706,15 @@ def taken_now(
 
     The mode is read from what is installed, not asked of the person
     running: a git install the lock does not pin makes a default-branch
-    run, so that no such run is saved over a release run.
+    run, so that no such run is saved over a release run. An index install
+    laid over the project's environment leaves it a release run, because
+    the command installs that version again (`Run`).
     """
     recorded = _machine_file()
     now = began or moment()
     overlays = git_overlays(LOCK_FILE)
-    with_args = "".join(f"--with {shlex.quote(req)} " for req, _ in overlays)
+    requirements = [req for req, _ in overlays] + index_overlays(LOCK_FILE)
+    with_args = "".join(f"--with {shlex.quote(req)} " for req in requirements)
     branches = "\n".join(
         f"{req.split()[0]} {ref}"
         for req, ref in overlays
@@ -1064,11 +1136,11 @@ def rendered_method(measurement: Measurement) -> str:
 def _rendered_command(run: Run) -> list[str]:
     """Return the command's lines: one, or one per `--with` it carries.
 
-    A `--with` names a URL, which no width can be imposed on, so each goes
-    on a line of its own, continued as a shell continues one, and only the
-    first line is held to `LINE`. The backslash follows the closing quote
-    with no space, so that a line past the page's width has no whitespace
-    after the URL starts, which markdownlint's MD013 accepts.
+    A git `--with` names a URL, which no width can be imposed on, so each
+    `--with` goes on a line of its own, continued as a shell continues one,
+    and only the first line is held to `LINE`. The backslash follows the
+    requirement with no space, so that a line past the page's width has no
+    whitespace after the URL starts, which markdownlint's MD013 accepts.
     """
     words = shlex.split(run.command)
     if "--with" not in words:
