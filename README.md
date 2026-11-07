@@ -1,50 +1,5 @@
 # btclib-benchmarks
 
-<!-- The badges are what the reader decides with, in the three groups
-btclib-org/.github's README.md section 2 fixes: what the software is and
-whether it can be used, whether it works, and what the OpenSSF makes of
-it.
-
-Inside the second group the gates come first, in the order a commit meets
-them, and the sentinels follow in the order section 10 of that standard
-schedules them -- the badge order *is* the calendar order over that
-subset, which is why the two move together or not at all. The day and
-hour each sentinel owns live in that section and are not copied here: a
-reader wanting the schedule reads it there, where it is still true.
-
-This block is shorter than a sibling library's, and by subtraction rather
-than by omission: nothing here is published to an index and nothing here
-is served by Read the Docs, so the PyPI version, the download count, the
-development status, the supported interpreters and the documentation
-build have no state to report.
-
-The third group is empty, and by decision rather than by property:
-section 10 of that standard records which trees carry which sentinel,
-and it does not name this repository for `scorecard`. REPOSITORY.md's
-*What is not configured, and why* is where that sits beside the rest of
-what this tree does without.
-
-One badge per line keeps a change to one line and every line inside
-MD013, whose 80 columns bind only where a space follows them.
-
-A badge that reports no state -- "we use ruff", "we use uv" -- reports a
-choice instead, and those are in CONTRIBUTING.md, beside the prose that
-says how the choice is enforced. -->
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/btclib-org/benchmarks/main.svg)](https://results.pre-commit.ci/latest/github/btclib-org/benchmarks/main)
-[![lint workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/lint.yml?query=branch%3Amain)
-[![test workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/test.yml?query=branch%3Amain)
-[![docs workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/docs.yml?query=branch%3Amain)
-[![vendored-vectors workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/vendored-vectors.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/vendored-vectors.yml?query=branch%3Amain)
-[![mutation workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/mutation.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/mutation.yml?query=branch%3Amain)
-[![deps-latest workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/deps-latest.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/deps-latest.yml?query=branch%3Amain)
-[![deps-oldest workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/deps-oldest.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/deps-oldest.yml?query=branch%3Amain)
-[![os-macos workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/os-macos.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/os-macos.yml?query=branch%3Amain)
-[![os-ubuntu workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/os-ubuntu.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/os-ubuntu.yml?query=branch%3Amain)
-[![links workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/links.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/links.yml?query=branch%3Amain)
-[![codeql workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/codeql.yml?query=branch%3Amain)
-
----
-
 Timings of [btclib](https://github.com/btclib-org/btclib),
 [btclib-secp256k1](https://github.com/btclib-org/btclib-secp256k1) and
 [bip39-slip39](https://github.com/btclib-org/bip39-slip39) against the
@@ -283,3 +238,19 @@ against.
 ## Licence
 
 MIT, as every btclib-org repository is.
+
+## Status
+
+<!-- Section 2 of btclib-org/.github's README.md says which badges sit here. -->
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/btclib-org/benchmarks/main.svg)](https://results.pre-commit.ci/latest/github/btclib-org/benchmarks/main)
+[![lint workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/lint.yml?query=branch%3Amain)
+[![test workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/test.yml?query=branch%3Amain)
+[![docs workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/docs.yml?query=branch%3Amain)
+[![vendored-vectors workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/vendored-vectors.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/vendored-vectors.yml?query=branch%3Amain)
+[![mutation workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/mutation.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/mutation.yml?query=branch%3Amain)
+[![deps-latest workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/deps-latest.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/deps-latest.yml?query=branch%3Amain)
+[![deps-oldest workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/deps-oldest.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/deps-oldest.yml?query=branch%3Amain)
+[![os-macos workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/os-macos.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/os-macos.yml?query=branch%3Amain)
+[![os-ubuntu workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/os-ubuntu.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/os-ubuntu.yml?query=branch%3Amain)
+[![links workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/links.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/links.yml?query=branch%3Amain)
+[![codeql workflow status](https://github.com/btclib-org/benchmarks/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/btclib-org/benchmarks/actions/workflows/codeql.yml?query=branch%3Amain)
