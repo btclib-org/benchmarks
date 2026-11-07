@@ -109,10 +109,10 @@ Each prints what it resolved — package versions, and which arithmetic
 backend each comparand actually ran — before any number, because a timing
 means nothing without them.
 
-A run also writes itself to `results/<name>.json`, and
-`scripts/render.py` is what turns that into the published page. Two
-commands rather than one, for the reason under "One run of each,
-published" below.
+Run as above, a script takes a release run and writes it to
+`results/<name>.json`, and `scripts/render.py` is what turns that into
+the published page. Two commands rather than one, for the reason under
+"One run of each, published" below.
 
 ### The interpreter is 3.13, not the newest
 

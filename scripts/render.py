@@ -9,9 +9,10 @@
     uv run python scripts/render.py default-branch/05-key-reuse
     uv run python scripts/render.py --check    # say what is stale, write none
 
-A benchmark writes `results/<name>.json` when it is run, or
-`results/default-branch/<name>.json` for a run at a default branch
-(`_results.taken_now` says which). This reads that file and puts its
+A benchmark saves its run as `results/<name>.json`, or
+`results/default-branch/<name>.json` for a default-branch run;
+CONTRIBUTING.md's *Publishing a run, which is a second command* says
+which runs are saved, and where. This reads the saved run and puts its
 three blocks into the `.md` page beside it, between the markers the page
 carries. Everything else in the page -- the headings, the paragraph
 explaining what a column means, the analysis under the numbers -- is
@@ -94,8 +95,8 @@ TABLES_PREFIX = "tables: "
 DEFAULT_BRANCH_PAGE = """\
 # At a default branch: {benchmark}
 
-A run with a comparand installed from git, at the ref its command names.
-The script, and the page of its release run:
+A run with a git install `uv.lock` does not pin, at the commit its command
+names. The script, and the page of its release run:
 
 - `scripts/{benchmark}.py`
 - [`results/{benchmark}.md`][release]
