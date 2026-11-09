@@ -67,16 +67,16 @@ _GH = shutil.which("gh") or "gh"
 _HEADING = re.compile(r"^### (.+)$", re.MULTILINE)
 
 # a fenced block's key/value lines, in the spelling section 7 of the
-# organization standard fixes; a value's own continuation onto a further,
-# unindented-marker line is not captured, and is not needed -- every check
-# below reads only the first line of a field. The separator is `[ \t]+`
-# rather than `\s+`: `\s` also matches the newline ending a bare key's own
-# line, so a key written with no value and no trailing whitespace, and not
-# last in its block, would let the separator cross into the following line
-# and capture that whole line as its own value -- leaving the field the
-# next line actually names unmatched. Confining the separator to the line
-# answers a bare key with no match at all, which is what the checks below
-# already treat as that field being absent.
+# organization's standard fixes; a value's own continuation onto a
+# further, unindented-marker line is not captured, and is not needed --
+# every check below reads only the first line of a field. The separator is
+# `[ \t]+` rather than `\s+`: `\s` also matches the newline ending a bare
+# key's own line, so a key written with no value and no trailing
+# whitespace, and not last in its block, would let the separator cross
+# into the following line and capture that whole line as its own value --
+# leaving the field the next line actually names unmatched. Confining the
+# separator to the line answers a bare key with no match at all, which is
+# what the checks below already treat as that field being absent.
 _FIELD = re.compile(r"^(repo|path|commit|blob|pulled|behind)[ \t]+(.*)$", re.MULTILINE)
 
 

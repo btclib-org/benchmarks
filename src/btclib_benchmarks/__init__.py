@@ -6,8 +6,9 @@
 
 Every submodule of this package is named with a leading underscore --
 `_inputs`, `_provenance`, `_releases`, `_results`, `_timing`, `_vectors` --
-so none of them is part of the public surface the organization standard's
-section 7 asks a package to declare, and the root re-exports nothing.
+so none of them is part of the public surface section 7 of the
+organization's standard asks a package to declare, and the root re-exports
+nothing.
 """
 
 from __future__ import annotations

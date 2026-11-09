@@ -458,7 +458,7 @@ def test_a_run_coverage_read_no_configuration_for_is_refused() -> None:
 def test_nothing_measuring_is_not_an_ungated_run() -> None:
     """`--no-cov` is left alone.
 
-    Section 10 of the organization standard has a sentinel cell that
+    Section 10 of the organization's standard has a sentinel cell that
     runs the suite pass it, and the suite step of `os-macos.yml` is
     where that happens here -- `os-ubuntu.yml`'s, `deps-oldest.yml`'s
     and `deps-latest.yml`'s own cells moved into `btclib-org/.github`'s

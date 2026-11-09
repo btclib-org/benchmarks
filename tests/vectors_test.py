@@ -91,7 +91,7 @@ if TYPE_CHECKING:
 DATA = _vectors.VECTORS
 
 # one provenance entry of README.md, matched whole rather than field by
-# field. Section 7 of the organization standard fixes the block's field
+# field. Section 7 of the organization's standard fixes the block's field
 # names and their spacing, and a sweep outside this repository parses it, so
 # the shape is part of what a drifted file should fail on: a block that
 # still carries a right blob under a wrong spelling is one nothing reads

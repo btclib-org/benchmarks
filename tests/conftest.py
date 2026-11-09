@@ -18,8 +18,8 @@ is the whole of what the `sys.path` insert below buys.
 100% ratchet is what a bare `uv run pytest` measures rather than
 something only CI reaches, and the price is that every partial run
 reports against it too. Which invocations count as asking for less than
-the suite is section 8 of the organization standard's to decide, and the
-docstring below is where each of them is read.
+the suite is for section 8 of the organization's standard to decide, and
+the docstring below is where each of them is read.
 
 The guard beside it is on that ratchet reaching the run at all. coverage
 looks for its configuration in the directory the process started in, so
@@ -130,7 +130,7 @@ def coverage_fail_under(
     naming the threshold is the one thing this must not overrule.
 
     A subset is what pytest was *asked* for, and section 8 of the
-    organization standard names the set: `-k`, `-m`, `--deselect`,
+    organization's standard names the set: `-k`, `-m`, `--deselect`,
     `--ignore`, `--ignore-glob`, `--lf`, and paths that leave part of the
     suite out, which is `asks_for_everything`'s question and not whether
     a path was named at all. A run that leaves tests out measures the
@@ -239,7 +239,7 @@ def configuration_went_unread(
     if cov_config is None:
         return False
     if asked is not None:
-        # section 8 of the organization standard has the hook never
+        # section 8 of the organization's standard has the hook never
         # overruling an explicit `--cov-fail-under`, and a caller who
         # named the floor has not had one taken away in silence
         return False

@@ -13,7 +13,7 @@ name: os-macos
 # but Linux.
 #
 # The matrix carries `macos-latest` alone, arm64: macOS is supported on
-# arm64 alone, as section 10 of btclib-org/.github's README.md says.
+# arm64 alone, as section 10 of the organization's standard says.
 #
 # It gates no commit and no merge -- a macOS regression sits on main for
 # at most a week -- and nothing calls it, this project having nothing to

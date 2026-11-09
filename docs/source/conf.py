@@ -39,8 +39,8 @@ html_theme = "furo"
 exclude_patterns: list[str] = []
 
 # resolved before -n is turned on in .github/workflows/docs.yml and
-# .readthedocs.yaml, per btclib-org/.github's README.md "The
-# documentation": without this, a stdlib name in an annotation reports as
+# .readthedocs.yaml, per "The documentation" in the organization's
+# standard: without this, a stdlib name in an annotation reports as
 # this tree's own unresolved reference rather than as the standard
 # library's
 intersphinx_mapping = {
@@ -60,7 +60,7 @@ intersphinx_mapping = {
 # so the fragment is an xref to a target no page has and -W fails on a
 # link the forge renders correctly. Six is every level markdown heads at,
 # which makes the number a fixed point rather than a value re-derived
-# from headings that move: section 14 of btclib-org/.github's README.md
+# from headings that move: section 14 of the organization's standard
 # ports CONTRIBUTING.md's shared half into every repository, so a heading
 # added there moves a depth read off this tree's own files
 # (btclib-org/.github#715)

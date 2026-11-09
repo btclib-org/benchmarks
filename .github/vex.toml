@@ -1,5 +1,5 @@
 # What this tree has judged not to affect it. The lint job's audit
-# ignores each id (btclib-org/.github's README, section 12).
+# ignores each id (the organization's standard, section 12).
 
 [[not_affected]]
 id = "GHSA-wj6h-64fc-37mp"

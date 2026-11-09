@@ -5,7 +5,7 @@ and the answer that call gives today. A setting recorded as prose alone
 is one nobody can check; recorded this way, a drift is one command away
 from being seen.
 
-What is recorded is the settings [section 11 of the repository
+What is recorded is the settings [section 11 of the organization's
 standard](https://github.com/btclib-org/.github/blob/main/README.md#11-github-settings)
 asks about — the ones [section 16's
 checklist](https://github.com/btclib-org/.github/blob/main/README.md#16-checklists)
@@ -89,7 +89,7 @@ producing `docs / Build the documentation`. It runs the `sphinx-build
 -W` command `.readthedocs.yaml` also runs, on the interpreter
 `.python-version` pins rather than the `"3.14"` this job used to
 hardcode — the reusable workflow takes no `python-version` input,
-section 10 of the standard's `README.md` leaving a gate's interpreter
+section 10 of the organization's standard leaving a gate's interpreter
 to `.python-version` with no exception named for this one, and
 `.readthedocs.yaml` now names that same pin by hand instead of 3.14,
 since Read the Docs cannot read the file directly. A cross-reference
@@ -281,7 +281,7 @@ and this tree runs no `scorecard` sentinel: *What is not configured,
 and why* below is that decision, and the answer above is what keeps it
 a decision rather than an impediment.
 
-[Section 11 of the repository
+[Section 11 of the organization's
 standard](https://github.com/btclib-org/.github/blob/main/README.md#11-github-settings)
 turns the wiki and the projects board off on every tree: an unused wiki
 is a second place a reader can land looking for what the tracker
@@ -542,8 +542,8 @@ scanning's non-provider patterns and validity checks, is read back under
   none of them times anything; `CONTRIBUTING.md`'s "What the suite can
   and cannot check" is where that rule and its reason are written down.
 - **No `scorecard.yml`, and no OpenSSF Scorecard badge.** The two are
-  one membership in section 10 of the repository standard, whose *Which
-  trees carry which sentinel* does not name this repository for
+  one membership in section 10 of the organization's standard, whose
+  *Which trees carry which sentinel* does not name this repository for
   `scorecard`: what the run buys is an opinion of the tree's
   supply-chain posture formed outside the organization, and a reading
   nobody displays is not worth the run

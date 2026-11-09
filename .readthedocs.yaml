@@ -27,7 +27,7 @@
 # wrong, which is the whole of it today; -n adds sphinx's own
 # cross-reference resolution -- a `:class:` or `:func:` role naming
 # something that does not exist -- ahead of the day a page writes one,
-# per btclib-org/.github's README.md "The documentation".
+# per "The documentation" in the organization's standard.
 
 # Required
 version: 2

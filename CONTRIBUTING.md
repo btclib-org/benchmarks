@@ -366,7 +366,7 @@ page reachable from no toctree is a red check and not a note in a log.
 on -- a `:class:` or `:func:` role naming something that does not exist
 -- which nothing under `docs/source` writes today, so the flag is ahead
 of the content that will exercise it rather than catching anything here
-yet; `btclib-org/.github`'s README.md "The documentation" has the
+yet; "The documentation" in the organization's standard has the
 reason it is on regardless. `-W` fails at the end of the build rather
 than at the first warning, so one broken page does not hide the next.
 
@@ -445,10 +445,10 @@ ls .github/workflows/
 ```
 
 rather than a list here, and each one says in its own header what it
-answers for. The day each of them runs is section 10 of the repository
-standard this file opens by naming: one calendar covering every
-repository in the organization is one thing to remember rather than one
-per tree, and a day repeated here is a day that goes stale here.
+answers for. The day each of them runs is section 10 of the
+organization's standard: one calendar covering every repository in the
+organization is one thing to remember rather than one per tree, and a
+day repeated here is a day that goes stale here.
 
 What that costs is worth stating rather than discovering. A regression
 that only shows on `3.11`, on aarch64 or on macOS is not refused before

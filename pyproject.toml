@@ -166,7 +166,7 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Security :: Cryptography",
     # `src/btclib_benchmarks/py.typed` ships in the wheel: section 3 of
-    # the organization standard asks that this classifier and that
+    # the organization's standard asks that this classifier and that
     # marker agree, one being PEP 561's promise to an installer and the
     # other the same promise on the index page
     "Typing :: Typed",
@@ -212,7 +212,7 @@ check = [
     # back to an isolated one that resolves [build-system]'s requires from
     # an index. This is that requirement's uv_build, and
     # .pre-commit-config.yaml's own pyroma hook is what section 12 of the
-    # organization standard asks for: a hook building the project uses a
+    # organization's standard asks for: a hook building the project uses a
     # backend [build-system] admits
     "uv_build>=0.12.0,<0.14",
 ]

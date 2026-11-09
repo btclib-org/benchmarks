@@ -95,7 +95,7 @@ concurrency:
   # absence of a push trigger above: nothing runs this workflow on the
   # commit a merge creates, so the run in flight is the only reading the
   # merged content gets before the schedule comes round, and cancelling
-  # it says nothing (section 10 of btclib-org/.github's README.md). So
+  # it says nothing (section 10 of the organization's standard). So
   # the expression is false there and true everywhere else -- a closed,
   # merged run still lands in the group and queues behind whatever is
   # running instead of cancelling it
@@ -103,7 +103,7 @@ concurrency:
 
 jobs:
   # the job itself is btclib-org/.github's, called at a tagged commit
-  # (section 10 of btclib-org/.github's README.md); what stays here is
+  # (section 10 of the organization's standard); what stays here is
   # the trigger, the schedule and which files are this tree's
   # documentation
   links:

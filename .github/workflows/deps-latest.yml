@@ -78,7 +78,7 @@ jobs:
   # the checkout, the uv setup, the runner-image step, the hook cache,
   # the upgrade and the suite and lint runs over it are
   # btclib-org/.github's: reusable-deps-latest.yml, called at a tagged
-  # commit (section 10 of btclib-org/.github's README.md). What stays
+  # commit (section 10 of the organization's standard). What stays
   # here is the trigger, the concurrency group, the workflow-level
   # permissions and this job's own id, and the facts the called workflow
   # asks a caller for rather than states itself: the matrix and

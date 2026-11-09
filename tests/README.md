@@ -1,6 +1,6 @@
 # Tests
 
-This file exists for section 7 of the [organization standard][std],
+This file exists for section 7 of the [organization's standard][std],
 which asks each repository to declare which of its conventions the suite
 turns into a red test rather than leave it to be read off a directory
 listing. `vectors/README.md` is the other file about what the suite

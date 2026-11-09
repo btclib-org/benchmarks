@@ -277,11 +277,11 @@ repos:
         name: markdownlint-cli2 (in place fixes)
         args: [--fix]
   # how a link destination is spelled, which markdownlint has no rule
-  # for. The rule is the organization's: btclib-org/.github's README
-  # states it, and the measurement behind it -- myst renders the
-  # destination of a link it cannot resolve verbatim, so the publishing
-  # repositories can key their built-html grep on one pattern only if
-  # there is one spelling to key on (btclib-org/.github#20).
+  # for. The organization's standard states the rule, and the
+  # measurement behind it -- myst renders the destination of a link it
+  # cannot resolve verbatim, so the publishing repositories can key
+  # their built-html grep on one pattern only if there is one spelling
+  # to key on (btclib-org/.github#20).
   #
   # Here it enforces a convention rather than catching a defect, and the
   # difference is what this comment is for. docs/source/conf.py resolves a
@@ -335,7 +335,7 @@ repos:
           (?<![`!\[])(?:!?\[(?:[^]]|\]\([^)]*\))*\]\(|^\x20{0,3}\[[^]]+\]:\s*)(?!\.\.?/|#|[A-Za-z][A-Za-z0-9+.-]*:)[^)\s]
         types: [markdown]
       # a line that ends inside a word, at that word's own hyphen.
-      # Section 4 of the organization standard is the rule: what such a
+      # Section 4 of the organization's standard is the rule: what such a
       # line renders as, why nothing else here catches it, what this
       # pattern cannot see, and what the measurement was before it was
       # proposed. The types are where a build renders prose from --
@@ -348,8 +348,8 @@ repos:
         entry: "[A-Za-z0-9]-$"
         types_or: [markdown, python, rst]
       # a placeholder that is a whole argument, in quotes. Section 9 of
-      # the organization standard is the rule and what the quoting costs
-      # a paste; section 4 is where this hook is, which quotes it
+      # the organization's standard is the rule and what the quoting
+      # costs a paste; section 4 is where this hook is, which quotes it
       # exempts, and the three things this pattern cannot see. The
       # discrimination is read off the line and not off the fence around
       # it, because a fence-aware pattern has to consume everything
@@ -435,7 +435,7 @@ repos:
         name: yamllint (the default rule set, less two)
   # the width of a toml comment, which taplo above does not settle: it
   # aligns a comment that trails a value and rewraps none. Section 3 of
-  # the organization standard names this hook as what holds
+  # the organization's standard names this hook as what holds
   # pyproject.toml's comments to 80 columns, and section 4 says what the
   # pattern actually reads: 80 bytes, which are columns where the comment
   # is ASCII. `.{80}\S*[ \t]` reports a line only when whitespace is left
@@ -587,7 +587,7 @@ repos:
         language: pygrep
         entry: '\b(text|universal_newlines)=True'
         files: \.py$
-      # the acceptance command section 8 of the organization standard
+      # the acceptance command section 8 of the organization's standard
       # gives, run at the gate: a pragma with nothing after it on its
       # line carries no reason, for no cover and no branch alike. The
       # `#` immediately before pragma is what a comment always carries
@@ -761,12 +761,12 @@ repos:
   # every unrelated bump in that commit with it
   # (btclib-org/.github#1199).
   # `language: system` and `uv run --locked` are the form section 4 of the
-  # organization standard gives a local mypy hook, and uv is on the PATH
+  # organization's standard gives a local mypy hook, and uv is on the PATH
   # of every hook because the lint gate is started by it.
   # `--only-group check` adds that group to the environment the gate runs
   # from and takes nothing out of it, and installs no project;
   # `--no-build` makes a dependency with no wheel fail rather than
-  # compile, as section 4 of the organization standard says. The
+  # compile, as section 4 of the organization's standard says. The
   # `-d --min=10 .` and `always_run` are the upstream hook's own
   # definition, written out because a local hook cannot inherit one.
   #
