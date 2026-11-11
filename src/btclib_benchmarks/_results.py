@@ -961,9 +961,7 @@ def counted_once(tables: Sequence[Table]) -> str:
         for row in table.rows
         if isinstance(row, Timing)
     }
-    if len(counts) != 1:
-        return ""
-    return counted_calls(*counts.pop())
+    return counted_calls(*counts.pop()) if len(counts) == 1 else ""
 
 
 def counted_calls(rounds: int | None, calls: int | None) -> str:
@@ -1072,7 +1070,7 @@ def rendered_break_even(table: BreakEven, width: int) -> str:
     heading = f"  {'':<{width}}{'prepare':>10}{'saves/call':>13}"
     if apart:
         heading += f"{DISPERSION_HEADINGS['halves_apart']:>{DISPERSION}}"
-    lines = [table.title, heading + f"{'break-even':>13}"]
+    lines = [table.title, f"{heading}{'break-even':>13}"]
     for row in table.rows:
         saved = row.plain - row.prepared
         line = f"  {row.label:<{width}}{row.prepare:10.2f}{saved:13.2f}"

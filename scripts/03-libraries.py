@@ -333,9 +333,7 @@ def _buidl_backend() -> str:
     a PyPI install is `buidl.pecc`, pure Python, unless somebody ran that
     step by hand.
     """
-    if buidl.libsec_status.is_libsec_enabled():
-        return LIBSECP256K1
-    return PURE_PYTHON
+    return LIBSECP256K1 if buidl.libsec_status.is_libsec_enabled() else PURE_PYTHON
 
 
 def _pycoin_native_module() -> str | None:
@@ -705,12 +703,7 @@ SSA_BTCLIB_HELD = cycle(
     ]
 )
 # the raw material the fresh rows build their object from, per call
-SSA_BUIDL_FRESH = cycle(
-    [
-        (scalar, msg)
-        for scalar, msg in zip(PYCOIN_SCALARS[:BUIDL_CALLS], MESSAGES, strict=False)
-    ]
-)
+SSA_BUIDL_FRESH = cycle(list(zip(PYCOIN_SCALARS[:BUIDL_CALLS], MESSAGES, strict=False)))
 SSA_EMBIT_FRESH = cycle(list(zip(PRVKEYS, MESSAGES, strict=True)))
 # the x-only key the verification takes, cut in the fixtures rather than
 # derived inside the row: deriving it is a generator multiplication, and

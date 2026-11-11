@@ -458,18 +458,17 @@ def provenance() -> Provenance:
     `released` column, by its ref and commit where no release is recorded
     for that commit.
     """
-    rows = []
     by_date = sorted(WRAPPERS, key=lambda row: _built_from(row[0]), reverse=True)
-    for dist_name, bindings in by_date:
-        rows.append(
-            [
-                dist_name,
-                version(dist_name),
-                _built_from(dist_name),
-                _vendored_pin(dist_name),
-                bindings,
-            ]
-        )
+    rows = [
+        [
+            dist_name,
+            version(dist_name),
+            _built_from(dist_name),
+            _vendored_pin(dist_name),
+            bindings,
+        ]
+        for dist_name, bindings in by_date
+    ]
     return Provenance(
         columns=[
             "package",
