@@ -32,8 +32,8 @@ already have.
 
 The private key has no counterpart here. The one table a signature leans
 on is the generator's, which every key shares and which `ecc` memoizes.
-What a signer can keep per key is what `ecc.ecc.ssa.Signer` and
-`ecc.ecc.dsa.Signer` hold across calls, and `scripts/02-btclib-vs-btclib.py`
+What a signer can keep per key is what `ecc.ssa.Signer` and
+`ecc.dsa.Signer` hold across calls, and `scripts/02-btclib-vs-btclib.py`
 prices the first. So this benchmark is about verification and has no
 signing table.
 
@@ -95,8 +95,8 @@ from typing import TYPE_CHECKING, TypeVar
 import btclib_secp256k1
 import ecc
 import ecdsa
+from ecc import dsa
 from ecc.curves import curve, sec_point
-from ecc.ecc import dsa
 
 from btclib_benchmarks import _inputs
 from btclib_benchmarks._provenance import described

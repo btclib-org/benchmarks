@@ -106,9 +106,10 @@ ones would sit in a lock a library that never imports them still
 carries, so a Dependabot alert against one would misname what it is
 about. Here the relationship runs the other way, and an alert against a
 comparand names the package it is actually about. `base58-bech32`,
-`bip32-descriptors` and `bip39-slip39` are btclib-org's own: the reason holds
-for the first two only while btclib does not import them, and not for the
-third, which `btclib-wallet` imports.
+`bip32-descriptors` and `bip39-slip39` are btclib-org's own: the reason
+holds for `bip32-descriptors` only while btclib does not import it, and
+not for `base58-bech32`, which btclib imports, nor for `bip39-slip39`,
+which `btclib-wallet` imports.
 
 ## What sits outside the scripts
 

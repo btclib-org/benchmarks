@@ -150,8 +150,8 @@ import ecdsa
 import pycoin.symbols.btc
 import secp256k1lab.bip340
 from btclib.key import PrvKeyData
+from ecc import dsa, ssa
 from ecc.curves import curve
-from ecc.ecc import dsa, ssa
 from ellipticcurve.ecdsa import Ecdsa as StarkbankEcdsa
 from ellipticcurve.privateKey import PrivateKey as StarkbankPrivateKey
 from secp256k1lab.secp256k1 import G as LAB_G

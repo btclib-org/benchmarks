@@ -56,7 +56,6 @@ from typing import TYPE_CHECKING
 import base58_bech32.base58
 import bitcoin.base58
 import bitcoin.core.key
-import btclib.base58
 import btclib_secp256k1.dsa
 import btclib_secp256k1.ssa
 import buidl.hd
@@ -74,8 +73,8 @@ import pytest
 import secp256k1
 import secp256k1lab.bip340
 from bip32_descriptors import bip32
+from ecc import dsa, ssa
 from ecc.curves import curve
-from ecc.ecc import dsa, ssa
 from ellipticcurve.ecdsa import Ecdsa as StarkbankEcdsa
 from ellipticcurve.publicKey import PublicKey as StarkbankPublicKey
 from ellipticcurve.signature import Signature as StarkbankSignature
@@ -595,12 +594,9 @@ def test_ecdsa_verification_matches_wycheproof(
 # differ: the alphabet is easy and the leading zeros are not, a zero byte
 # being a `1` rather than a digit of a number.
 #
-# btclib spells the plain codec privately, `encode` and `decode` being the
-# checksummed pair the rest of its module is about. Reaching for the private
-# name is the only way to ask this question of it, and asking it of the
-# public one would be asking a different question of every library here
+# btclib has no column: its base58check is base58-bech32's, whose plain
+# codec is the `base58-bech32` column
 BASE58_ENCODERS: dict[str, Callable[[bytes], str]] = {
-    "btclib": lambda payload: btclib.base58._b58encode(payload).decode(),
     "pycoin": pycoin.encoding.b58.b2a_base58,
     "embit": embit.base58.encode,
     "buidl": buidl.helper.encode_base58,
@@ -614,7 +610,6 @@ BASE58_ENCODERS: dict[str, Callable[[bytes], str]] = {
 # their APIs, so it is written down rather than discovered by a loop that
 # skips whatever raises
 BASE58_DECODERS: dict[str, Callable[[str], bytes]] = {
-    "btclib": lambda encoded: btclib.base58._b58decode(encoded.encode()),
     "pycoin": pycoin.encoding.b58.a2b_base58,
     "embit": embit.base58.decode,
     "python-bitcoinlib": bitcoin.base58.decode,

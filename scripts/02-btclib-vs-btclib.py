@@ -21,8 +21,8 @@ every dispatch site in btclib and `ecc` asks
 `ecc.curves.curve._libsecp256k1_serves`, or
 `ecc.curves.is_libsecp256k1_serving`, and both read the one switch
 `python_arithmetic_only` throws. The rows below are the ones reachable
-through a public function. `ecc.ecc.commit_nonce` dispatches too,
-and it and `ecc.ecc.pedersen` have no row: anti-exfil signing and
+through a public function. `ecc.commit_nonce` dispatches too,
+and it and `ecc.pedersen` have no row: anti-exfil signing and
 Pedersen commitments are protocol machinery rather than operations an
 application performs.
 
@@ -126,13 +126,12 @@ from typing import TYPE_CHECKING
 import btclib
 import btclib_secp256k1
 import ecc
-from btclib import b58
-from btclib.ecc import bms, ellswift
+from btclib import b58, bms, ellswift
 from btclib.key import PrvKeyData, PubKeyData
 from btclib.script import taproot
+from ecc import dh, dsa, ssa
+from ecc import ellswift as ecc_ellswift
 from ecc.curves import curve, sec_point
-from ecc.ecc import dh, dsa, ssa
-from ecc.ecc import ellswift as ecc_ellswift
 
 from btclib_benchmarks import _inputs
 from btclib_benchmarks._provenance import described

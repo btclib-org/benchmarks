@@ -80,25 +80,30 @@ requires-python = ">=3.11"
 # says how to ask it without making it the default.
 dependencies = [
     # where a public key is `PrvKeyData(q).pub.sec`: it has no
-    # `btclib.to_pub_key`. The first release that reaches the bindings
-    # only through `ecc`, so that the one switch `ecc` holds turns its
-    # libsecp256k1 off, and whose `PubKeyData` caches `point_var`
-    "btclib>=2026.10.24",
+    # `btclib.to_pub_key`. 2026.10.24 is the first release that reaches
+    # the bindings only through `ecc`, so that the one switch `ecc` holds
+    # turns its libsecp256k1 off, and whose `PubKeyData` caches
+    # `point_var`. 2026.11.10 is the first whose base58 and bech32 are
+    # `base58-bech32`'s, with no `btclib.base58` of its own, so that the
+    # `base58-bech32` column of `tests/vectors_test.py` is btclib's codec
+    "btclib>=2026.11.10",
     # the curve and the schemes, which the scripts and the suite import
     # directly, among them the private switch `_libsecp256k1_available`,
     # `dsa.sign_`'s `grind=` and `sec_point.point_from_octets_var`.
-    # 2026.10.23 is the floor `btclib` itself declares
-    "ecc>=2026.10.23",
+    # 2026.11.8 is the floor `btclib` itself declares
+    "ecc>=2026.11.8",
     # `bip32_descriptors.bip32`, which 03's BIP32 rows and the suite's BIP32
     # tests import. Its BIP32 imports `ecc`, so it reads the one switch
-    # `ecc` holds. 2026.10.31 is its first release
-    "bip32-descriptors>=2026.10.31",
+    # `ecc` holds. 2026.11.11 is its first release that imports the
+    # codecs from `base58-bech32`: the earlier ones import
+    # `btclib.base58`, which btclib 2026.11.10 removes
+    "bip32-descriptors>=2026.11.11",
     # `ssa.Signer`, which these rows call. 0.8.0.9 is the build that
     # `LIBSECP256K1_PINS` in `src/btclib_benchmarks/_releases.py` records,
     # so a run at the floor names the libsecp256k1 revision its row carries
     "btclib-secp256k1>=0.8.0.9",
-    # the codecs leaving btclib for a package of their own
-    # (btclib-org/btclib#2712)
+    # the codecs btclib imports, a package of their own
+    # (btclib-org/btclib#2712). 2026.10.23 is the floor `btclib` declares
     "base58-bech32>=2026.10.23",
     # BIP39 and SLIP-0039, which `scripts/07-mnemonics.py` times against
     # `mnemonic`, `shamir-mnemonic` and `embit`
