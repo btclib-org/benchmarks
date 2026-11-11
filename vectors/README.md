@@ -10,8 +10,11 @@ correctly first.
 `tests/vectors_test.py` is what runs them. btclib's code is held to them
 too, by the suite of the repository each file is pinned to below (ecc,
 bip32-descriptors or base58-bech32); btclib's own suite carries none of
-them now. Redundant is the right amount for the one package whose numbers
-this project exists to publish.
+them now. The one exception is the ECDSA file: it is still pinned to a
+commit in btclib's history, and the suite that tests btclib against those
+cases now is ecc's, whose copy is a newer revision with one more case
+(see its entry below). Redundant is the right amount for the one package
+whose numbers this project exists to publish.
 
 ## Where each file came from
 
