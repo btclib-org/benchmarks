@@ -66,14 +66,13 @@ exclude-operators = ["core/ReplaceBinaryOperator_BitOr_.*"]
 # by identity as well as by value -- CPython's own compiler deduplicates
 # equal constants within one code object, so `a is b` answers `True` for
 # two such literals with nothing else forcing it. The fix builds both
-# sides at run time instead, `str(1) + "." + str(2) + "." + str(3)`: a
-# plain `.join()` over the same literal parts would have worked too --
-# `dis` shows it as a genuine call, never folded -- but ruff's own
-# static-join-to-f-string flags exactly that shape and asks for the
-# literal it built, which would restore the identity this test exists to
-# rule out. Guaranteeing distinct objects is what lets the case add one
-# where the recorded version sorts before the installed one, which `>=`
-# would have accepted.
+# sides at run time instead, `".".join(map(str, (1, 2, 3)))`, which `dis`
+# shows as a genuine call, never folded. A `.join()` over literal string
+# parts is not used because ruff's own static-join-to-f-string flags it
+# and asks for the literal it built, which would restore the identity
+# this test exists to rule out. Guaranteeing distinct objects is what
+# lets the case add one where the recorded version sorts before the
+# installed one, which `>=` would have accepted.
 
 [cosmic-ray.distributor]
 name = "local"
