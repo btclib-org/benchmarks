@@ -217,12 +217,13 @@ def test_the_issue_body_tells_the_two_kinds_of_drift_apart(readme: Path) -> None
     assert body.splitlines()[3:] == [
         (
             f"- **h**: pinned to `{_PINNED}`, and `upstream/one` has no commit"
-            " touching `vectors/a.json` any more -- renamed, moved or deleted"
-            " upstream"
+            " touching `vectors/a.json` any more -- a path its default"
+            " branch never held"
         ),
         (
             f"- **h**: pinned to `{_PINNED}`, upstream's tip of `vectors/a.json`"
-            f" is now `{_TIP}` (2026-03-04), `upstream/one`"
+            f" is now `{_TIP}` (2026-03-04), `upstream/one` -- which may have"
+            " deleted or renamed the file rather than changed it"
         ),
         "",
         "Not checked by this run, for the reason named:",
@@ -315,7 +316,10 @@ def test_main_prints_each_finding_and_reports_unless_dry(
             f"GONE: upstream/one/a.json pinned to {_PINNED}, and upstream/one"
             " has no commit touching vectors/a.json any more"
         ),
-        f"BEHIND: upstream/one/b.json pinned to {_PINNED}, tip is {_TIP} (2026-03-04)",
+        (
+            f"BEHIND: upstream/one/b.json pinned to {_PINNED}, tip is {_TIP}"
+            " (2026-03-04), which may have deleted or renamed it"
+        ),
         "SKIPPED: upstream/one/b.json (already documented as behind)",
         "SKIPPED: upstream/two/d.json (no commit to check against)",
         "SKIPPED: upstream/two/e.json (already documented as behind)",
