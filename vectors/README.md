@@ -102,7 +102,7 @@ repo    btclib-org/base58-bech32
 path    tests/_data/base58_encode_decode.json
 commit  aa779e4c76801c8c65710ebf6ec179070a49954b  2026-10-18
 blob    7255fd45c8003ad99ee95c507d8c54f49b50e4c2
-pulled  2026-11-11
+pulled  2026-08-15
 behind  0 revisions; that commit is the tip of the path
 ```
 
