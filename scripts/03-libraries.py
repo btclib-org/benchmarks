@@ -184,8 +184,8 @@ import embit.ec
 import pycoin.encoding.b58
 import pycoin.symbols.btc
 from bip32_descriptors import bip32 as btclib_bip32
+from ecc import dsa, ssa
 from ecc.curves import curve
-from ecc.ecc import dsa, ssa
 
 from btclib_benchmarks import _inputs
 from btclib_benchmarks._provenance import WHAT_A_TIMING_CONTAINS, undeclared
@@ -679,7 +679,7 @@ SSA_BTCLIB = cycle(
 # fresh row above it differ by the holding and by nothing else. Which of them
 # saves what is a reading of each library rather than an assumption:
 #
-# - `ecc.ecc.ssa.Signer` holds the `libsecp256k1_ssa.Signer` that
+# - `ecc.ssa.Signer` holds the `libsecp256k1_ssa.Signer` that
 #   `ssa.sign_` builds and wipes inside every call, and that is a keypair --
 #   a multiplication of the generator, and about half of what a BIP340
 #   signature costs on this path;

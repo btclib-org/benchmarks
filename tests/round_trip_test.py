@@ -34,7 +34,7 @@ import bitcoin.bech32
 import bitcoin.core.key as bitcoinlib_key
 import buidl.ecc
 import buidl.pecc
-import ecc.ecc.dsa
+import ecc.dsa
 import ecdsa
 import embit.ec
 import pycoin.symbols.btc
@@ -71,8 +71,8 @@ def _bitcoinlib_key(prvkey: bytes) -> bitcoinlib_key.CECKey:
 
 def _btclib(msg: bytes, prvkey: bytes) -> bool:
     """Sign and verify through btclib, one signature and no grinding."""
-    signature = ecc.ecc.dsa.sign_(msg, prvkey, grind=False)
-    return ecc.ecc.dsa.verify_(
+    signature = ecc.dsa.sign_(msg, prvkey, grind=False)
+    return ecc.dsa.verify_(
         msg, PrvKeyData(int.from_bytes(prvkey, "big")).pub.sec, signature
     )
 
