@@ -148,13 +148,14 @@ def _entries_at_tip(readme: str) -> tuple[list[Entry], list[str]]:
 def _latest_commit(repo: str, path: str) -> tuple[str, str] | None:
     """Return the sha and date of the most recent commit touching path.
 
-    None where no commit on the default branch touches the path at all,
-    a path that branch never held. A path deleted or renamed away is not
-    that case: the API answers with the commit that removed it, which
-    comes back from here as an ordinary tip. Answering None rather than
-    unpacking one commit out of an empty list is what lets `report` see it
-    as drift with no tip to name, instead of the run going red on a bare
-    `ValueError` and no issue ever opening.
+    None where no commit in the default branch's current history touches
+    the path at all. That is not proof the branch never held it, since a
+    history rewrite can drop the commits that did. A path deleted or
+    renamed away is not that case: the API answers with the commit that
+    removed it, which comes back from here as an ordinary tip. Answering
+    None rather than unpacking one commit out of an empty list is what
+    lets `report` see it as drift with no tip to name, instead of the run
+    going red on a bare `ValueError` and no issue ever opening.
     """
     result = subprocess.run(  # noqa: S603
         [
@@ -188,7 +189,7 @@ def find_drift(readme_path: Path) -> tuple[list[Drift], list[str]]:
     for entry in entries:
         latest = _latest_commit(entry.repo, entry.path)
         if latest is None:
-            # a path upstream never held: drift with no tip to name
+            # no commit in upstream's current history: drift with no tip to name
             drifted.append(Drift(entry, "", ""))
         elif latest[0] != entry.commit:
             drifted.append(Drift(entry, *latest))
@@ -206,8 +207,8 @@ def _issue_body(readme_path: Path, drifted: list[Drift], skipped: list[str]) -> 
             lines.append(
                 f"- **{drift.entry.heading}**: pinned to"
                 f" `{drift.entry.commit}`, and `{drift.entry.repo}` has no"
-                f" commit touching `{drift.entry.path}` any more -- a path its"
-                " default branch never held"
+                f" commit touching `{drift.entry.path}` any more -- none in its"
+                " default branch's current history"
             )
             continue
         lines.append(

@@ -217,8 +217,8 @@ def test_the_issue_body_tells_the_two_kinds_of_drift_apart(readme: Path) -> None
     assert body.splitlines()[3:] == [
         (
             f"- **h**: pinned to `{_PINNED}`, and `upstream/one` has no commit"
-            " touching `vectors/a.json` any more -- a path its default"
-            " branch never held"
+            " touching `vectors/a.json` any more -- none in its default"
+            " branch's current history"
         ),
         (
             f"- **h**: pinned to `{_PINNED}`, upstream's tip of `vectors/a.json`"
