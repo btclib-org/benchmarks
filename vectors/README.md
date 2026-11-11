@@ -7,9 +7,11 @@ number produced by code nobody here wrote, and the only thing that makes
 one worth printing is that the code answered a published question
 correctly first.
 
-`tests/vectors_test.py` is what runs them. btclib is held to them too, which
-its own suite already does: redundant is the right amount for the one
-package whose numbers this project exists to publish.
+`tests/vectors_test.py` is what runs them. btclib's code is held to them
+too, by the suite of the repository each file is pinned to below (ecc,
+bip32-descriptors or base58-bech32); btclib's own suite carries none of
+them now. Redundant is the right amount for the one package whose numbers
+this project exists to publish.
 
 ## Where each file came from
 
