@@ -342,8 +342,8 @@ coverage; every lint hook; and the documentation build with the checks
 of the pages it writes.
 
 ```shell
-uv run pytest
-uv run pre-commit run --all-files
+uv run pytest || exit $?
+uv run pre-commit run --all-files || exit $?
 uv run --locked --no-default-groups --group docs \
   sphinx-build -W -n -b html docs/source docs/build/html || exit $?
 if grep -rn 'href="#\.\.\?/' docs/build/html --include='*.html'; then
