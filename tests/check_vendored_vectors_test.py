@@ -110,15 +110,21 @@ class _Gh:
     """A `subprocess.run` stand-in answering `gh` from a table.
 
     `commits` maps an upstream path to the commits `gh api` lists for it,
-    and `open_issues` is what `gh issue list` finds. Every call is kept
-    in `calls`, its argument list without the executable.
+    and `open_issues` holds the numbers of the open issues titled as
+    searched. `longer_titles` maps the number of each other issue the
+    search finds to its title, listed first. Every call is kept in
+    `calls`, its argument list without the executable.
     """
 
     def __init__(
-        self, commits: dict[str, list[str]], open_issues: list[int] | None = None
+        self,
+        commits: dict[str, list[str]],
+        open_issues: list[int] | None = None,
+        longer_titles: dict[int, str] | None = None,
     ) -> None:
         self.commits = commits
         self.open_issues = open_issues or []
+        self.longer_titles = longer_titles or {}
         self.calls: list[list[str]] = []
 
     def __call__(self, args: list[str], **_: object) -> SimpleNamespace:
@@ -131,9 +137,14 @@ class _Gh:
             ]
             return SimpleNamespace(stdout=json.dumps(listed))
         if args[1:3] == ["issue", "list"]:
-            return SimpleNamespace(
-                stdout=json.dumps([{"number": n} for n in self.open_issues])
-            )
+            search = args[args.index("--search") + 1]
+            title = search.removeprefix('"').removesuffix('" in:title')
+            issues = [
+                {"number": number, "title": longer}
+                for number, longer in self.longer_titles.items()
+            ]
+            issues.extend({"number": n, "title": title} for n in self.open_issues)
+            return SimpleNamespace(stdout=json.dumps(issues))
         return SimpleNamespace(stdout="")
 
 
@@ -271,13 +282,28 @@ def test_the_report_is_one_gh_command_per_outcome(
         "--search",
         f'"{_TITLE}" in:title',
         "--json",
-        "number",
+        "number,title",
     ]
     if command is None:
         assert len(gh.calls) == 1
     else:
         assert len(gh.calls) == 2
         assert gh.calls[1][: len(command)] == command
+
+
+def test_open_issue_number_skips_a_longer_title_holding_the_one_searched(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An issue the search finds under a longer title is not this one.
+
+    It is listed first, ahead of the exact title where there is one
+    (issue btclib-org/.github#2152).
+    """
+    longer = {41: "Two vendored vectors behind upstream, in tests"}
+    _stub(monkeypatch, _Gh({}, [], longer))
+    assert check._open_issue_number(_TITLE) is None
+    _stub(monkeypatch, _Gh({}, [42], longer))
+    assert check._open_issue_number(_TITLE) == "42"
 
 
 @pytest.mark.parametrize("argv", [[], ["README.md"], ["a", "b", "c"]])
