@@ -107,7 +107,7 @@ jobs:
   # against, so the tags it prints are what a reader compares with the
   # provenance block of a page before believing that a row moved
   deps-latest:
-    uses: btclib-org/.github/.github/workflows/reusable-deps-latest.yml@305b1840909ffd49d653d20cc6f5f9e1ab6a3382 # v2026.11.10
+    uses: btclib-org/.github/.github/workflows/reusable-deps-latest.yml@cb5a79443399980ba717df2dea23dbedf6bdbc3a # v2026.11.12
     with:
       runners: '["ubuntu-latest"]'
       python-versions: '["3.11", "3.13"]'
