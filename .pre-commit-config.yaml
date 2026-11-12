@@ -288,13 +288,11 @@ repos:
   # link out of an included root file to the page that renders it, so the
   # `./CONTRIBUTING.md` REVIEWING.md carries -- and which this hook holds
   # to that spelling -- becomes a link to this documentation's own
-  # contributing page. A target no page here renders is left to myst,
-  # which reports it and takes docs.yml's -W with it: measured with a
-  # fresh environment, `[a](./REPOSITORY.md)` takes sphinx-build -W -n
-  # to exit 1 where the tree without it exits 0. So a root
-  # file's link to anything this documentation does not render is written
-  # as an absolute url, and the ones it does render are what this hook has
-  # to check.
+  # contributing page. What becomes of a target no page here renders is
+  # docs/source/conf.py's to say. Measured by appending each to
+  # CONTRIBUTING.md, `[a](./REPOSITORY.md)` renders a link to
+  # REPOSITORY.md on GitHub and `sphinx-build -E -n -W` exits 0, and
+  # `[a](./NOPE_PLANTED.md)`, naming no file, takes it to exit 1.
   #
   # Carried whole in every repository, for the reason the standard
   # gives: a rule with one
