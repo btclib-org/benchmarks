@@ -108,7 +108,7 @@ concurrency:
 
 jobs:
   codeql:
-    uses: btclib-org/.github/.github/workflows/reusable-codeql.yml@305b1840909ffd49d653d20cc6f5f9e1ab6a3382 # v2026.11.10
+    uses: btclib-org/.github/.github/workflows/reusable-codeql.yml@cb5a79443399980ba717df2dea23dbedf6bdbc3a # v2026.11.12
     # permissions do not inherit through a call: the analyze job the
     # reusable workflow runs wants security-events: write for its SARIF
     # upload and actions: read for the CodeQL action's own run-metadata

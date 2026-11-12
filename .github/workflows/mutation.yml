@@ -63,7 +63,7 @@ jobs:
   # that shape -- the ceiling is the sum of the three budgets plus the
   # environment, as the single job's own timeout-minutes used to be
   mutation:
-    uses: btclib-org/.github/.github/workflows/reusable-mutation.yml@305b1840909ffd49d653d20cc6f5f9e1ab6a3382 # v2026.11.10
+    uses: btclib-org/.github/.github/workflows/reusable-mutation.yml@cb5a79443399980ba717df2dea23dbedf6bdbc3a # v2026.11.12
     with:
       profiles: >-
         [{"profile": "the suite's own scope", "slug": "suite", "ceiling":

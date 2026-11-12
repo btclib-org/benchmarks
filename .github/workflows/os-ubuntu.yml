@@ -98,7 +98,7 @@ jobs:
     # pages are measured on, and the tag scripts/artifacts.py prints is
     # what says so instead of leaving the next aarch64-only divergence
     # to be blamed on the wrapper
-    uses: btclib-org/.github/.github/workflows/reusable-os-suite.yml@305b1840909ffd49d653d20cc6f5f9e1ab6a3382 # v2026.11.10
+    uses: btclib-org/.github/.github/workflows/reusable-os-suite.yml@cb5a79443399980ba717df2dea23dbedf6bdbc3a # v2026.11.12
     with:
       runners: '["ubuntu-latest", "ubuntu-24.04-arm"]'
       python-versions: '["3.11", "3.12", "3.13"]'
