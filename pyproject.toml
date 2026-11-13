@@ -392,6 +392,7 @@ git-only = [
     "COPYRIGHT",
     ".gitignore",
     ".markdownlint.jsonc",
+    ".prettierignore",
     ".readthedocs.yaml",
     ".secrets.baseline",
     ".sourcery.yaml",
