@@ -221,7 +221,15 @@ check = [
     # backend [build-system] admits
     "uv_build>=0.12.0,<0.14",
 ]
-docs = ["furo>=2025.12.19", "myst-parser>=5.1.0", "sphinx>=9.0.4"]
+docs = [
+    # furo brings in soupsieve, through beautifulsoup4, and soupsieve's
+    # releases free of GHSA-mmhr-3c5m-f64f require Python 3.11.5: without
+    # the marker the lock keeps an affected soupsieve for the interpreters
+    # below it, which the audit refuses
+    "furo>=2025.12.19; python_full_version >= '3.11.5'",
+    "myst-parser>=5.1.0",
+    "sphinx>=9.0.4",
+]
 # what the mutation workflow and a local session both run against;
 # .github/mutation/*.toml is the scope and CONTRIBUTING.md's own section
 # on it is the recipe, so this group is the one thing cosmic-ray needs
