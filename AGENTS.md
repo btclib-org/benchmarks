@@ -1,7 +1,6 @@
 # Working in this repository
 
 Read `CONTRIBUTING.md` for contribution rules and local gates,
-`REVIEWING.md` before opening or reviewing a pull request,
 `REPOSITORY.md` before changing repository settings, and
 `ARCHITECTURE.md` before changing benchmark structure.
 
