@@ -240,7 +240,7 @@ gh api repos/btclib-org/benchmarks \
          delete_on_merge: .delete_branch_on_merge,
          title: .squash_merge_commit_title,
          message: .squash_merge_commit_message}'
-# {"auto":true,"delete_on_merge":true,"merge":false,
+# {"auto":false,"delete_on_merge":true,"merge":false,
 #  "message":"COMMIT_MESSAGES","rebase":false,"squash":true,
 #  "title":"COMMIT_OR_PR_TITLE"}
 ```
@@ -248,8 +248,8 @@ gh api repos/btclib-org/benchmarks \
 Squash only, which is what `required_linear_history` above already
 implies and this makes unambiguous in the UI: one pull request is one
 commit on `main`. The ruleset names the same one, so the constraint
-holds even if this setting is flipped. Auto-merge is what presses it,
-once the review and the checks are in.
+holds even if this setting is flipped. Auto-merge is off, so no pull
+request can be armed and the merge is explicit.
 
 `COMMIT_OR_PR_TITLE` with `COMMIT_MESSAGES` is the pair section 11 asks
 for: a single-commit branch lands under its own subject and a longer one
