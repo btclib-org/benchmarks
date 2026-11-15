@@ -22,7 +22,10 @@ that name. Read back on 2026-11-02:
 
 ```shell
 gh api repos/btclib-org/btclib-benchmarks --jq .full_name
-# btclib-org/benchmarks
+```
+
+```text
+btclib-org/benchmarks
 ```
 
 ## Required checks on main
@@ -32,10 +35,13 @@ Read back on 2026-11-04T23:40Z:
 ```shell
 gh api repos/btclib-org/benchmarks/branches/main/protection \
   --jq '.required_status_checks | {strict, contexts}'
-# {"contexts":["test: every job passed","docs / Build the documentation",
-#              "lint / Lint and type-check","lint / Dependency review",
-#              "lint / Sign-off","sourcery / Sourcery"],
-#  "strict":false}
+```
+
+```json
+{"contexts":["test: every job passed","docs / Build the documentation",
+             "lint / Lint and type-check","lint / Dependency review",
+             "lint / Sign-off","sourcery / Sourcery"],
+ "strict":false}
 ```
 
 `test: every job passed` is an aggregate rather than a matrix cell.
@@ -145,15 +151,21 @@ gh api repos/btclib-org/benchmarks/branches/main/protection \
     reviews: .required_pull_request_reviews.required_approving_review_count,
     dismiss: .required_pull_request_reviews.dismiss_stale_reviews,
     admins: .enforce_admins.enabled}'
-# {"admins":false,"conversations":true,"deletions":false,"dismiss":true,
-#  "force":false,"linear":true,"reviews":1}
+```
+
+```json
+{"admins":false,"conversations":true,"deletions":false,"dismiss":true,
+ "force":false,"linear":true,"reviews":1}
 ```
 
 `main` is the repository's default branch and its only one:
 
 ```shell
 gh api repos/btclib-org/benchmarks --jq '.default_branch'
-# main
+```
+
+```text
+main
 ```
 
 No change reaches it except through a pull request — no exception, and
@@ -218,7 +230,10 @@ lightweight, so the rule does not check a tag's signature
 ```shell
 gh api repos/btclib-org/benchmarks/branches/main/protection\
 /required_signatures --jq '.enabled'
-# false
+```
+
+```text
+false
 ```
 
 Classic protection's own copy of the rule is off. No ruleset over `main`
@@ -240,16 +255,20 @@ gh api repos/btclib-org/benchmarks \
          delete_on_merge: .delete_branch_on_merge,
          title: .squash_merge_commit_title,
          message: .squash_merge_commit_message}'
-# {"auto":false,"delete_on_merge":true,"merge":false,
-#  "message":"COMMIT_MESSAGES","rebase":false,"squash":true,
-#  "title":"COMMIT_OR_PR_TITLE"}
+```
+
+```json
+{"auto":false,"delete_on_merge":true,"merge":false,
+ "message":"COMMIT_MESSAGES","rebase":false,"squash":true,
+ "title":"COMMIT_OR_PR_TITLE"}
 ```
 
 Squash only, which is what `required_linear_history` above already
 implies and this makes unambiguous in the UI: one pull request is one
 commit on `main`. The ruleset names the same one, so the constraint
-holds even if this setting is flipped. Auto-merge is off, so no pull
-request can be armed and the merge is explicit.
+holds even if this setting is flipped. Auto-merge is off, [for the
+reason section 11
+gives](https://github.com/btclib-org/.github/blob/main/README.md#merge-method).
 
 `COMMIT_OR_PR_TITLE` with `COMMIT_MESSAGES` is the pair section 11 asks
 for: a single-commit branch lands under its own subject and a longer one
@@ -268,7 +287,10 @@ standing is a pull request that was closed rather than merged.
 gh api repos/btclib-org/benchmarks \
   --jq '{issues: .has_issues, visibility: .visibility,
          wiki: .has_wiki, projects: .has_projects}'
-# {"issues":true,"projects":false,"visibility":"public","wiki":false}
+```
+
+```json
+{"issues":true,"projects":false,"visibility":"public","wiki":false}
 ```
 
 Issues are on: they are where a benchmark that has stopped measuring
@@ -311,7 +333,10 @@ Read back on 2026-11-05:
 
 ```shell
 gh api repos/btclib-org/benchmarks --jq .homepage
-# https://btclib.org/benchmarks/
+```
+
+```text
+https://btclib.org/benchmarks/
 ```
 
 Section 3 makes the `.homepage` this repository's page on btclib.org, the
@@ -351,8 +376,11 @@ read back rather than assumed:
 
 ```shell
 gh api repos/btclib-org/benchmarks/actions/permissions/workflow
-# {"default_workflow_permissions":"read",
-#  "can_approve_pull_request_reviews":false}
+```
+
+```json
+{"default_workflow_permissions":"read",
+ "can_approve_pull_request_reviews":false}
 ```
 
 `read`, so a job that declares nothing gets nothing beyond reading the
@@ -392,10 +420,19 @@ gh api -X PUT \
 
 ```shell
 gh api repos/btclib-org/benchmarks/actions/permissions
-# {"enabled":true,"allowed_actions":"all","sha_pinning_required":true}
+```
+
+```json
+{"enabled":true,"allowed_actions":"all","sha_pinning_required":true}
+```
+
+```shell
 gh api orgs/btclib-org/actions/permissions \
   --jq '{allowed_actions, sha_pinning_required}'
-# {"allowed_actions":"all","sha_pinning_required":true}
+```
+
+```json
+{"allowed_actions":"all","sha_pinning_required":true}
 ```
 
 The organization gives the same two answers, `sha_pinning_required`
@@ -406,9 +443,18 @@ fields](https://github.com/btclib-org/.github/blob/main/README.md#tokens-publish
 
 ```shell
 gh api repos/btclib-org/benchmarks --jq .web_commit_signoff_required
-# true
+```
+
+```text
+true
+```
+
+```shell
 gh api orgs/btclib-org --jq .web_commit_signoff_required
-# true
+```
+
+```text
+true
 ```
 
 Set at the organization level, [for the reason section 11
@@ -418,11 +464,14 @@ gives](https://github.com/btclib-org/.github/blob/main/README.md#signatures).
 
 ```shell
 gh api repos/btclib-org/benchmarks --jq '.security_and_analysis'
-# {"dependabot_security_updates":{"status":"enabled"},
-#  "secret_scanning":{"status":"enabled"},
-#  "secret_scanning_non_provider_patterns":{"status":"disabled"},
-#  "secret_scanning_push_protection":{"status":"enabled"},
-#  "secret_scanning_validity_checks":{"status":"disabled"}}
+```
+
+```json
+{"dependabot_security_updates":{"status":"enabled"},
+ "secret_scanning":{"status":"enabled"},
+ "secret_scanning_non_provider_patterns":{"status":"disabled"},
+ "secret_scanning_push_protection":{"status":"enabled"},
+ "secret_scanning_validity_checks":{"status":"disabled"}}
 ```
 
 Three settings, all free on a public repository, off by default, and
@@ -453,7 +502,10 @@ Read back with no existing secret-scanning alert on this repository:
 ```shell
 gh api repos/btclib-org/benchmarks/secret-scanning/alerts \
   --jq 'length'
-# 0
+```
+
+```text
+0
 ```
 
 From the alignment audit of 21 August 2026,
@@ -463,7 +515,10 @@ From the alignment audit of 21 August 2026,
 
 ```shell
 gh api repos/btclib-org/benchmarks/private-vulnerability-reporting
-# {"enabled":true}
+```
+
+```json
+{"enabled":true}
 ```
 
 On, [as the standard asks of every
@@ -477,8 +532,11 @@ tier 1's row.
 ```shell
 gh api repos/btclib-org/benchmarks/code-scanning/default-setup \
   --jq '{state, languages, query_suite}'
-# {"languages":["actions","python"],"query_suite":"default",
-#  "state":"not-configured"}
+```
+
+```json
+{"languages":["actions","python"],"query_suite":"default",
+ "state":"not-configured"}
 ```
 
 `state: not-configured` is what has to stay true, and it is the one
@@ -505,7 +563,10 @@ in the tree:
 
 ```shell
 gh api orgs/btclib-org --jq '{plan: .plan.name}'
-# {"plan":"free"}
+```
+
+```json
+{"plan":"free"}
 ```
 
 The plan is a fact about a changing world rather than a setting this
@@ -564,7 +625,10 @@ scanning's non-provider patterns and validity checks, is read back under
 ```shell
 curl -s https://pypi.org/pypi/secp256k1/json |
   jq '[.urls[].filename | select(test("win"))] | length'
-# 0
+```
+
+```text
+0
 ```
 
 The day `secp256k1` installs on Windows, from a wheel or its sdist, and
@@ -596,11 +660,30 @@ for f in allow_forking allow_update_branch has_discussions has_downloads \
   printf '%s %s %s\n' "$f" \
     "$(printf '%s' "$std" | grep -c "$f")" "$(grep -c "\.$f" REPOSITORY.md)"
 done
-# every line reads "<field> 0 0"
+```
+
+```text
+allow_forking 0 0
+allow_update_branch 0 0
+has_discussions 0 0
+has_downloads 0 0
+is_template 0 0
+```
+
+```shell
 printf '%s' "$std" | grep -c squash_merge_commit_title
-# 1
+```
+
+```text
+1
+```
+
+```shell
 grep -c '\.allow_squash[_]merge' REPOSITORY.md
-# 1
+```
+
+```text
+1
 ```
 
 The two counts under the loop are what make its zeros absences: a field
@@ -617,10 +700,19 @@ repository's:
 ```shell
 gh api repos/btclib-org/benchmarks/actions/secrets \
   --jq '.total_count'
-# 0
+```
+
+```text
+0
+```
+
+```shell
 gh api orgs/btclib-org/actions/secrets \
   --jq '.secrets[] | "\(.name) \(.visibility)"'
-# CLAUDE_CODE_OAUTH_TOKEN all
+```
+
+```text
+CLAUDE_CODE_OAUTH_TOKEN all
 ```
 
 The organization's secret store answering with a name is what makes this
@@ -635,7 +727,10 @@ store is read too:
 
 ```shell
 gh api repos/btclib-org/benchmarks/actions/variables --jq .total_count
-# 0
+```
+
+```text
+0
 ```
 
 **A facility nothing here uses.** Environments, self-hosted runners,
