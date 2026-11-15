@@ -34,7 +34,7 @@ on:
     # every merge -- observed on this repository's own main after #99
     # merged. The concurrency block below groups a pull_request run by
     # the pull request's own number instead, which cannot equal any
-    # push's github.ref under any action
+    # push's group under any action
     types: [opened, reopened, synchronize, ready_for_review, closed]
   workflow_call:
   workflow_dispatch:
@@ -46,10 +46,14 @@ concurrency:
   # github.event.pull_request.number, not github.ref alone, is what a
   # pull_request run of any action groups by, so a closed run cannot
   # resolve to the same group as a push to main -- the pull_request
-  # trigger's own comment above has the evidence. A push carries no
-  # pull_request context, so github.ref is still what groups it,
-  # unchanged
-  group: test-${{ github.event.pull_request.number || github.ref }}
+  # trigger's own comment above has the evidence. A push run is keyed
+  # on its commit and its ref instead, as section 10 of the
+  # organization's standard says, so a later push to main does not
+  # cancel it; a dispatch falls back to github.ref
+  group: >-
+    test-${{ github.event_name == 'push'
+    && format('{0}-{1}', github.sha, github.ref)
+    || github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
