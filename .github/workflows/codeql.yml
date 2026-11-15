@@ -101,9 +101,14 @@ concurrency:
   # observed on this repository's own main after #99 merged. Grouping by
   # the pull request's own number here from the start is what keeps this
   # workflow from hitting the same bug the day it gets its first closed
-  # event. A push carries no pull_request context, so github.ref is
-  # still what groups it, unchanged
-  group: codeql-${{ github.event.pull_request.number || github.ref }}
+  # event. A push run is keyed on its commit and its ref instead, as
+  # section 10 of the organization's standard says, so a later push to
+  # main does not cancel it; a schedule or a dispatch falls back to
+  # github.ref
+  group: >-
+    codeql-${{ github.event_name == 'push'
+    && format('{0}-{1}', github.sha, github.ref)
+    || github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
