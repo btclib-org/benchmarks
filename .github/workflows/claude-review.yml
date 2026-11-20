@@ -17,14 +17,16 @@ name: claude-review
 # The required checks stay what they are, and which ones those are is
 # REPOSITORY.md's to record and the endpoint's to answer.
 #
-# It is one more job on every pull request, which is not free: the
-# concurrent-job ceiling belongs to the organization rather than to this
-# repository, so a slot taken here is one a sibling repository's matrix
-# waits behind. REPOSITORY.md states that ceiling and carries the command
-# that answers which plan sets it. It earns the slot by being short -- it
-# reads a diff, it does not build a matrix -- and by skipping a draft, as
-# test.yml does in its own `if:` and lint.yml through the workflow it
-# calls.
+# On a pull request it costs a review job and two short jobs that set
+# that review's reactions, one of which also runs on a draft. That is
+# not free: the concurrent-job ceiling belongs to the organization
+# rather than to this repository, so a slot taken here is one a sibling
+# repository's matrix waits behind. REPOSITORY.md states that ceiling
+# and carries the command that answers which plan sets it. The jobs earn
+# their slots by being short -- the review reads a diff, it does not
+# build a matrix, and the other two only clear or set a reaction -- and
+# the review by skipping a draft, as test.yml does in its own `if:` and
+# lint.yml through the workflow it calls.
 #
 # extra-prompt is passed nothing rather than an empty string: it takes a
 # paragraph on what the calling tree ships that a review cannot check
@@ -88,13 +90,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # one calling job reaches both of the called workflow's jobs, and each
-  # of them declines the events that are not its own -- the review
-  # answers a pull_request, the mention a comment carrying @claude -- so
-  # this job carries no `if:` of the review's: the switch, the draft
-  # decline and the fork check are the called workflow's, read against
-  # this caller's own event. A condition lifted up here would take the
-  # answer to a mention out with the review.
+  # one calling job reaches every job of the called workflow, and each
+  # of them declines the events that are not its own -- the review and
+  # its reactions answer a pull_request, the mention a comment carrying
+  # @claude -- so this job carries no `if:` of the review's: the switch,
+  # the draft decline and the fork check are the called workflow's, read
+  # against this caller's own event. A condition lifted up here would
+  # take the answer to a mention out with the review.
   #
   # Permissions do not inherit through a call, and a called workflow's
   # own block can only downgrade what the caller granted, so the write
@@ -112,11 +114,11 @@ jobs:
     # by a comment gets no cache access, which is what actionlint's
     # cache-call-unrestricted asks for
     cache-mode: none
-    uses: btclib-org/.github/.github/workflows/reusable-claude-review.yml@cb5a79443399980ba717df2dea23dbedf6bdbc3a # v2026.11.12
+    uses: btclib-org/.github/.github/workflows/reusable-claude-review.yml@a96ab77e0b59880c6412f62da26d3f62dfc31e0c # v2026.11.20
     permissions:
       contents: read
-      # what posting the review, or the answer to a mention, takes
-      pull-requests: write # posting the review, and the reply to a mention
+      # what posting the review, its reactions or the reply takes
+      pull-requests: write # the review, its reactions, the reply to a mention
       # the OIDC token the action mints during its own startup, whatever
       # the Anthropic credential is
       id-token: write # the OIDC token the action mints at its own startup
