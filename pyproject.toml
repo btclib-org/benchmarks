@@ -512,8 +512,13 @@ branch = true
 # the package, and its cases assert that a run is read, written and
 # rendered, not what the page says, so the rewording of a heading stays out
 # of the suite
+#
+# `.github/scripts/check_link_destinations.py` is a copy section 14 of
+# the organization's standard compares, and section 8 leaves it out
+# here: it is tested in btclib-org/.github, where its canonical copy is
 omit = [
     "*/site-packages/*",
+    ".github/scripts/check_link_destinations.py",
     "scripts/03-libraries.py",
     "scripts/02-btclib-vs-btclib.py",
     "scripts/05-key-reuse.py",

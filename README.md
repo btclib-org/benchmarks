@@ -31,9 +31,10 @@ The benchmarks, each answering a different question:
 - **`07-mnemonics.py`** — BIP39 and SLIP-0039: `bip39-slip39` against
   Trezor's `mnemonic` and `shamir-mnemonic`, and `embit`
 
-[ARCHITECTURE](./ARCHITECTURE.md) is the design behind them: the shared
-modules under `src/btclib_benchmarks/`, and why measuring and publishing
-stay two separate commands.
+[ARCHITECTURE](https://github.com/btclib-org/benchmarks/blob/main/ARCHITECTURE.md)
+is the design behind them: the shared modules under
+`src/btclib_benchmarks/`, and why measuring and publishing stay two
+separate commands.
 
 ## Why this is its own repository
 
@@ -202,8 +203,9 @@ editable, or shadowed on `sys.path` — and the suite checks the
 comparands' answers (`CONTRIBUTING.md`'s *Writing a row*). A number
 produced without that header is not a result from this project; treat it
 as unverified.
-[ASSURANCE_CASE.md](./ASSURANCE_CASE.md) argues why that check holds,
-what this project defends and what it does not.
+[ASSURANCE_CASE.md](https://github.com/btclib-org/benchmarks/blob/main/ASSURANCE_CASE.md)
+argues why that check holds, what this project defends and what it does
+not.
 
 A vulnerability in a package this project measures belongs upstream,
 with the package that has it. Dependabot alerts raised here are alerts
@@ -233,8 +235,8 @@ understood by the person who submits it.
 has the rules.
 
 It also has the commands that measure a run and render it.
-[`REVIEWING.md`](./REVIEWING.md) says what a pull request is answered
-against.
+[`REVIEWING.md`](https://github.com/btclib-org/benchmarks/blob/main/REVIEWING.md)
+says what a pull request is answered against.
 
 ## Licence
 

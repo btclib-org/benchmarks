@@ -358,13 +358,14 @@ git grep -nE '^ +[a-z-]+: write' -- .github/workflows/
 
 Why a particular scope is held is written beside the job that spends it,
 where whoever changes that job can see it, rather than here. What this
-section adds is the bound those lines are kept under: each of them is one
-job's own work — posting a review or a reply, filing a code-scanning
-alert, an OIDC token an action asks for at its own startup, opening the
-issue a weekly drift check reports through. `actions: read` is the
-elevation that is not a write, and what distinguishes it is where a job
-reads from — the API rather than the tree — which is the bound, and not
-a list of what each one asks the API for.
+section adds is the bound those lines are kept under: each of them is
+one job's own work — posting a review, its reactions, a reply or a
+comment, filing a code-scanning alert, an OIDC token an action asks for
+at its own startup, opening the issue a weekly drift check reports
+through. `actions: read` is the elevation that is not a write, and what
+distinguishes it is where a job reads from — the API rather than the
+tree — which is the bound, and not a list of what each one asks the API
+for.
 
 The bound is what the same command says is absent: no job holds
 `contents: write` or `packages: write`. Nothing a run does reaches the
@@ -720,10 +721,11 @@ repository's zero an absence rather than an endpoint that answers empty
 for everyone.
 
 **A switch this repository does not set.** `claude-review.yml` calls
-`btclib-org/.github`'s `reusable-claude-review.yml`, whose jobs guard on
-`vars.CLAUDE_REVIEW_ENABLED`; a variable set here would take precedence
-over one of the same name on the organization, so the repository's own
-store is read too:
+`btclib-org/.github`'s `reusable-claude-review.yml`, whose review and
+mention jobs guard on `vars.CLAUDE_REVIEW_ENABLED`; the job that clears
+a new head's reactions runs whatever it says. A variable set here would
+take precedence over one of the same name on the organization, so the
+repository's own store is read too:
 
 ```shell
 gh api repos/btclib-org/benchmarks/actions/variables --jq .total_count
